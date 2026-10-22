@@ -26,7 +26,7 @@ async function updateSitemap(posts){
  const xml='<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'+entries.join('\n')+'\n</urlset>\n';
  await writeFile('sitemap.xml',xml,'Update sitemap for published articles');
 }
-module.exports=async function(req,res){res.setHeader('Cache-Control','s-maxage=60, stale-while-revalidate=300');if(!OWNER||!REPO||!TOKEN){if(req.method==='GET'){res.status(200).json({posts:[],events:[],settings:{},warning:'GitHub environment variables are not configured'});return}res.status(503).json({error:'GitHub configuration missing. Set GITHUB_OWNER, GITHUB_REPO and GITHUB_TOKEN in Vercel.'});return}
+module.exports=async function(req,res){res.setHeader('Cache-Control','no-store, max-age=0');if(!OWNER||!REPO||!TOKEN){if(req.method==='GET' && !req.headers['x-admin-password']){res.status(200).json({posts:[],events:[],settings:{},warning:'GitHub environment variables are not configured'});return}res.status(503).json({error:'GitHub configuration missing. Set GITHUB_OWNER, GITHUB_REPO and GITHUB_TOKEN in Vercel.'});return}
 try{if(req.method==='GET' && req.query && req.query.image){
  const imagePath=String(req.query.image);
  if(!/^(?:uploads|assets\/uploads)\/[a-zA-Z0-9._-]+\.(?:jpg|jpeg|png|webp|gif)$/i.test(imagePath)){res.status(400).end('Invalid image path');return;}
@@ -38,7 +38,7 @@ try{if(req.method==='GET' && req.query && req.query.image){
  const bytes=Buffer.from(ij.content.replace(/\n/g,''),'base64');
  res.setHeader('Content-Type',imageMime(imagePath));res.setHeader('Cache-Control','public, max-age=86400, s-maxage=604800, stale-while-revalidate=86400');res.setHeader('X-Content-Type-Options','nosniff');res.status(200).send(bytes);return;
  }
- if(req.method==='GET'){const [posts,events,settings]=await Promise.all([readFile('data/posts.json',[]),readFile('data/events.json',[]),readFile('data/settings.json',{})]);const isAdmin=!!process.env.ADMIN_PASSWORD&&req.headers['x-admin-password']===process.env.ADMIN_PASSWORD;const visible=isAdmin?posts:posts.filter(p=>p.status==='published');res.status(200).json({posts:normalizePosts(visible),events,settings});return}
+ if(req.method==='GET'){const supplied=req.headers['x-admin-password'];const isAdmin=!!process.env.ADMIN_PASSWORD&&supplied===process.env.ADMIN_PASSWORD;if(supplied&&!isAdmin){res.status(401).json({error:'गलत पासवर्ड'});return}if(supplied&&!process.env.ADMIN_PASSWORD){res.status(503).json({error:'ADMIN_PASSWORD Vercel Environment Variables में सेट नहीं है।'});return}const [posts,events,settings]=await Promise.all([readFile('data/posts.json',[]),readFile('data/events.json',[]),readFile('data/settings.json',{})]);const visible=isAdmin?posts:posts.filter(p=>p.status==='published');res.status(200).json({posts:normalizePosts(visible),events,settings});return}
 if(req.method!=='POST'){res.setHeader('Allow','GET, POST');res.status(405).end();return}if(!process.env.ADMIN_PASSWORD||req.headers['x-admin-password']!==process.env.ADMIN_PASSWORD){res.status(401).json({error:'गलत पासवर्ड'});return}const b=req.body||{};if(b.action==='uploadImage'){
 if(!b.dataUrl||!/^data:image\/(jpeg|png|webp);base64,/i.test(b.dataUrl)){res.status(400).json({error:'मान्य JPG, PNG या WebP तस्वीर चुनें'});return}
 const match=b.dataUrl.match(/^data:(image\/(?:jpeg|png|webp));base64,([A-Za-z0-9+/=]+)$/i);
