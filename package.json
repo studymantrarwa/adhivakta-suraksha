@@ -1,0 +1,11 @@
+{
+  "name": "adhivakta-suraksha-site",
+  "private": true,
+  "version": "1.0.0",
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {
+    "@vercel/blob": "^1.1.1"
+  }
+}

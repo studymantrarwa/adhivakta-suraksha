@@ -17,9 +17,9 @@ Static SEO-friendly Hindi website + Vercel serverless API. No separate database 
    - `GITHUB_TOKEN` = token created above
    - `GITHUB_BRANCH` = `main` (or your actual default branch)
    - `ADMIN_PASSWORD` = a long unique password, not used elsewhere
-   - `SITE_URL` = `https://your-actual-domain.vercel.app` (used for article canonical URLs)
+   - `SITE_URL` = `https://adhivakta-suraksha.vercel.app` (used for article canonical URLs)
 5. Redeploy after adding variables.
-6. Update `YOUR-DOMAIN.vercel.app` in `index.html`, `blog.html`, `api/posts.js`, `robots.txt` and `sitemap.xml` to your actual Vercel domain/custom domain. Commit the changes and redeploy.
+6. Domain is already set to `https://adhivakta-suraksha.vercel.app` in canonical links, robots.txt and sitemap.xml. Keep the `SITE_URL` environment variable set to the same domain.
 7. Open `/admin.html`, log in with `ADMIN_PASSWORD`, then create posts/events and add the Google Form URL.
 
 ## Admin panel features
@@ -33,7 +33,7 @@ Static SEO-friendly Hindi website + Vercel serverless API. No separate database 
 - GitHub token and admin password must only exist in Vercel Environment Variables. Never put either in HTML/JS or commit them.
 - Admin login uses a shared password header over HTTPS and does not implement user accounts, password reset, or rate limiting. Use a strong password and enable GitHub/Vercel account MFA. For a large public organization, use proper identity and rate limiting.
 - Editing an existing post updates its HTML file and post index. Deleting a post removes it from the index but does not delete the old HTML file automatically; remove it from GitHub if needed.
-- The generated article canonical currently uses `YOUR-DOMAIN`; replace it in `api/posts.js` before launch.
+- The generated article canonical uses `SITE_URL`; set it to `https://adhivakta-suraksha.vercel.app` in Vercel Environment Variables.
 - Initial sample article is general awareness content and intentionally avoids claiming a particular law is already enacted. Verify all legal and event information before publishing.
 - Google Forms are operated by Google and the form owner; provide a suitable privacy notice in the form itself.
 - SEO cannot be guaranteed. Submit the sitemap in Google Search Console after deployment and add original, accurate, helpful articles over time.
@@ -57,5 +57,8 @@ You can open `index.html` for a visual preview, but `/api/posts` and Admin Panel
 - तस्वीर GitHub repository के `assets/uploads/` में सेव होती है। फिर पोस्ट सेव/प्रकाशित करें।
 - होमपेज और `/blog.html` पर Blogger-style image cards दिखते हैं; तस्वीर या शीर्षक टैप करने पर पूरा article page खुलता है।
 - नई पोस्ट मौजूदा पोस्टों के बाद feed में जुड़ती है; पुराने लेख edit करने पर उसी जगह अपडेट होता है।
-- छह आवश्यक Vercel variables और उनके अर्थ `VERCEL-ENV-VARIABLES.txt` में हैं। `SITE_URL` में वास्तविक deployed domain डालें और static HTML में `YOUR-DOMAIN.vercel.app` को भी बदलें।
+- छह आवश्यक Vercel variables और उनके अर्थ `VERCEL-ENV-VARIABLES.txt` में हैं। `SITE_URL` में वास्तविक deployed domain डालें और static HTML और sitemap में domain पहले से सेट है। यदि आगे custom domain जोड़ें, तभी सभी canonical URLs, `SITE_URL`, robots.txt और sitemap को एक साथ बदलें।
 - GitHub Contents API image upload के लिए token में `Contents: Read and write` permission अनिवार्य है।
+
+### Image uploads (Vercel Blob)
+Create a Blob store in Vercel Storage, then add its read-write token as `BLOB_READ_WRITE_TOKEN` in Project Settings → Environment Variables. Keep `GITHUB_TOKEN` and `BLOB_READ_WRITE_TOKEN` server-side only. Images are uploaded to Vercel Blob; the returned public URL is stored in the GitHub post record and generated article HTML. Redeploy after adding variables.
