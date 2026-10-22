@@ -1,0 +1,12 @@
+VERCEL ENVIRONMENT VARIABLES (Project → Settings → Environment Variables)
+
+GITHUB_OWNER = आपका GitHub username या organization
+GITHUB_REPO = आपकी website repository का नाम (केवल repo name)
+GITHUB_TOKEN = इस repository के लिए Fine-grained Personal Access Token; Contents permission Read and write
+GITHUB_BRANCH = main (यदि आपकी default branch अलग है तो वही नाम)
+ADMIN_PASSWORD = अपना मजबूत, अलग और निजी admin password
+SITE_URL = https://YOUR-PROJECT.vercel.app (अपने वास्तविक Vercel domain से बदलें; अंत में / न लगाएँ)
+
+सभी variables Production, Preview और Development environments में आवश्यकतानुसार सेट करें। सेव करने के बाद Vercel में Redeploy करें। GITHUB_TOKEN और ADMIN_PASSWORD को HTML/JS या GitHub code में कभी न डालें।
+Admin Panel: https://YOUR-PROJECT.vercel.app/admin.html
+Admin ID अलग से नहीं है; लॉगिन में ADMIN_PASSWORD ही उपयोग होता है।
