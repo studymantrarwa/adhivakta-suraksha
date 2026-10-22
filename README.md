@@ -62,3 +62,7 @@ You can open `index.html` for a visual preview, but `/api/posts` and Admin Panel
 
 ### Image uploads (no Vercel Blob required)
 Images are resized/compressed in the admin browser and uploaded through the existing GitHub Contents API into `uploads/`. The API returns a site-relative path such as `/uploads/image.jpg`; posts and article pages use that path, so images display from the same deployed website. No Vercel Blob store or `BLOB_READ_WRITE_TOKEN` is required. The existing `GITHUB_TOKEN` must have repository Contents read/write permission. Vercel automatically deploys after the image file is committed; publish/save the post after upload and wait for deployment to finish.
+
+
+## Image storage and display fix
+Article images are saved in the GitHub repository `uploads/` folder. The site serves them through `/api/posts?image=...`, so images do not depend on a new Vercel static deployment finishing first. After uploading an image in Admin, press Save Article as well. Keep the GitHub token private and make sure it has repository Contents read/write permission.
