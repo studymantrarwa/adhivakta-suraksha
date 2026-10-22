@@ -11,6 +11,6 @@ SITE_URL = https://adhivakta-suraksha.vercel.app (अंत में / न ल�
 Admin Panel: https://YOUR-PROJECT.vercel.app/admin.html
 Admin ID अलग से नहीं है; लॉगिन में ADMIN_PASSWORD ही उपयोग होता है।
 
-BLOB_READ_WRITE_TOKEN = Vercel Storage → Blob store → Connect Store/Settings से मिला Read-Write token. इसे Vercel Project → Settings → Environment Variables में Production (और जरूरत हो तो Preview) के लिए जोड़ें।
 
-तस्वीरें Vercel Blob में public URL के रूप में सेव होंगी; उसी URL को पोस्ट में GitHub की data/posts.json और posts/<slug>.html में सेव किया जाएगा। Token को HTML/JS या GitHub में कभी न रखें। Token जोड़ने के बाद Redeploy करें।
+
+तस्वीरें Admin Panel से compress होकर सीधे GitHub repository के uploads/ फ़ोल्डर में सेव होंगी। BLOB_READ_WRITE_TOKEN की जरूरत नहीं है। GITHUB_TOKEN में Contents read/write permission जरूरी है।

@@ -60,5 +60,5 @@ You can open `index.html` for a visual preview, but `/api/posts` and Admin Panel
 - छह आवश्यक Vercel variables और उनके अर्थ `VERCEL-ENV-VARIABLES.txt` में हैं। `SITE_URL` में वास्तविक deployed domain डालें और static HTML और sitemap में domain पहले से सेट है। यदि आगे custom domain जोड़ें, तभी सभी canonical URLs, `SITE_URL`, robots.txt और sitemap को एक साथ बदलें।
 - GitHub Contents API image upload के लिए token में `Contents: Read and write` permission अनिवार्य है।
 
-### Image uploads (Vercel Blob)
-Create a Blob store in Vercel Storage, then add its read-write token as `BLOB_READ_WRITE_TOKEN` in Project Settings → Environment Variables. Keep `GITHUB_TOKEN` and `BLOB_READ_WRITE_TOKEN` server-side only. Images are uploaded to Vercel Blob; the returned public URL is stored in the GitHub post record and generated article HTML. Redeploy after adding variables.
+### Image uploads (no Vercel Blob required)
+Images are resized/compressed in the admin browser and uploaded through the existing GitHub Contents API into `uploads/`. The API returns a site-relative path such as `/uploads/image.jpg`; posts and article pages use that path, so images display from the same deployed website. No Vercel Blob store or `BLOB_READ_WRITE_TOKEN` is required. The existing `GITHUB_TOKEN` must have repository Contents read/write permission. Vercel automatically deploys after the image file is committed; publish/save the post after upload and wait for deployment to finish.
