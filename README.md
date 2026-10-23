@@ -66,3 +66,11 @@ Images are resized/compressed in the admin browser and uploaded through the exis
 
 ## Image storage and display fix
 Article images are saved in the GitHub repository `uploads/` folder. The site serves them through `/api/posts?image=...`, so images do not depend on a new Vercel static deployment finishing first. After uploading an image in Admin, press Save Article as well. Keep the GitHub token private and make sure it has repository Contents read/write permission.
+
+
+## सुरक्षित प्रकाशन और नई सुविधाएँ
+- `WRITER_PASSWORD` वैकल्पिक Vercel environment variable है। इसे सेट करने पर Writer केवल ड्राफ्ट लेख सेव कर सकता है; प्रकाशित करना, कार्यक्रम/सेटिंग बदलना, तस्वीर अपलोड करना और लेख हटाना Admin तक सीमित है।
+- नई हिंदी शीर्षकों के लिए छोटे Roman slug बनाए जाते हैं; पहले से प्रकाशित पुराने URLs को अनावश्यक रूप से न बदलें।
+- लेख सूची में खोज, उपयोग की शर्तें पेज, और sitemap में कानूनी पेज शामिल हैं।
+- GitHub Token और Admin/Writer पासवर्ड केवल Vercel Environment Variables में रखें; उन्हें ZIP/GitHub source में न डालें।
+- Deploy के बाद `/`, `/blog.html`, `/terms.html`, `/admin.html`, `/api/posts` और `/sitemap.xml` खोलकर जांचें। Admin में एक ड्राफ्ट बनाकर test करें और फिर उसे प्रकाशित करें।
